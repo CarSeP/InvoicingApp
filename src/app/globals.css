@@ -5,15 +5,12 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-sidebar-background: hsl(220, 35%, 97%);
+  --color-sidebar-border: hsla(220, 20%, 80%, 0.4);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
