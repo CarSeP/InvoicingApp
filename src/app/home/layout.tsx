@@ -8,7 +8,7 @@ export default function HomeLayout({
   return (
     <div className="flex">
       <SidebarComponent />
-      <main className="p-4">{children}</main>
+      <main className="w-full p-4">{children}</main>
     </div>
   );
 }
