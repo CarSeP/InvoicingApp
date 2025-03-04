@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  User
+  Admin
+}
+
+enum Measurements {
+  Liters
+  Kilograms
+  Meters
+  Units
+}
+
+model Users {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  password String
+  active   Boolean @default(true)
+  role     Role    @default(User)
+  sales    Sales[]
+}
+
+model Products {
+  id          Int         @id @default(autoincrement())
+  description String      @unique
+  price       Decimal
+  active      Boolean     @default(true)
+  inventory   Inventory[]
+  invoices    Invoices[]
+}
+
+model Inventory {
+  id           Int          @id @default(autoincrement())
+  quantity     Decimal
+  measurements Measurements
+  product      Products     @relation(fields: [idProduct], references: [id])
+  idProduct    Int
+}
+
+model Invoices {
+  id            Int      @id @default(autoincrement())
+  invoiceNumber Int
+  product       Products @relation(fields: [idProduct], references: [id])
+  idProduct     Int
+  quantity      Decimal
+}
+
+model Sales {
+  id             Int      @id @default(autoincrement())
+  totalAmount    Decimal
+  providedAmount Decimal
+  date           DateTime
+  user           Users    @relation(fields: [idUser], references: [id])
+  idUser         Int
+}
