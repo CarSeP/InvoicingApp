@@ -8,11 +8,13 @@ export async function middleware(request: NextRequest) {
 
   try {
     await verify(process.env.publicKey || "", authToken);
+
+    if(request.nextUrl.pathname == "/login") return NextResponse.redirect(new URL("/home", request.url));
   } catch {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }
 
 export const config = {
-  matcher: "/home/:path*",
+  matcher: ["/home/:path*", "/login"],
 };
