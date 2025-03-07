@@ -7,14 +7,12 @@ export async function middleware(request: NextRequest) {
   if (!authToken) return NextResponse.redirect(new URL("/login", request.url));
 
   try {
-    await verify(process.env.publicKey || "", authToken);
-
-    if(request.nextUrl.pathname == "/login") return NextResponse.redirect(new URL("/home", request.url));
+    await verify(process.env.NEXT_PUBLIC_PASETO_PUBLIC_KEY || "", authToken);
   } catch {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 }
 
 export const config = {
-  matcher: ["/home/:path*", "/login"],
+  matcher: ["/home/:path*"],
 };

@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
   );
 
   if (validatedPassword) {
-    const token = await sign(process.env.secretKey || "", user);
+    const token = await sign(process.env.PASETO_SECRET_KEY || "", user);
     const cookieStore = await cookies();
     cookieStore.set({
       name: "auth",

@@ -6,7 +6,7 @@ const onHandleAuthorization = async (authToken: string | null) => {
     return NextResponse.json({ error: "No token provided" }, { status: 401 });
 
   try {
-    await verify(process.env.publicKey || "", authToken);
+    await verify(process.env.NEXT_PUBLIC_PASETO_PUBLIC_KEY || "", authToken);
     return null;
   } catch {
     return NextResponse.json(

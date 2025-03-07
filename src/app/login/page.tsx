@@ -14,7 +14,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+import { verify } from "paseto-ts/v4";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -34,6 +36,22 @@ export default function LoginPage() {
       setError(error.response.data.error);
     }
   };
+
+  const tokenValidator = async () => {
+    const authToken = getCookie("auth");
+    if (!authToken) return;
+    try {
+      await verify(
+        process.env.NEXT_PUBLIC_PASETO_PUBLIC_KEY || "",
+        authToken.toString()
+      );
+      router.push("/home");
+    } catch {}
+  };
+
+  useEffect(() => {
+    tokenValidator();
+  }, []);
 
   return (
     <Box
