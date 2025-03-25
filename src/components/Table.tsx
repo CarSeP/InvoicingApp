@@ -12,6 +12,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import NoDataMessageComponent from "./NoDataMessage";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,7 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function TableComponent({ data }: { data: any[] | null}) {
-  if(!data) return <div>No data</div>
+  if(!data) return <NoDataMessageComponent />
 
   const dataTable = data.map((el) => Object.entries(el))
 

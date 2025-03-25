@@ -6,6 +6,8 @@ import SendIcon from "@mui/icons-material/Send";
 import { useFetch, State } from "@/hooks/useFetch";
 import { useState } from "react";
 import UserManagerComponent from "@/components/UserManager";
+import LoaderComponent from "@/components/Loader";
+import ErrorMessageComponent from "@/components/ErrorMessage";
 
 const URL = "/api/users";
 
@@ -16,11 +18,11 @@ function UsersPage() {
   const closeModal = () => setShowModal(false);
 
   if (state == State.Loading) {
-    return <div>Loading</div>;
+    return <LoaderComponent />;
   }
 
   if (state == State.Error) {
-    return <div>Error</div>;
+    return <ErrorMessageComponent />;
   }
 
   return (
@@ -36,7 +38,7 @@ function UsersPage() {
         </Button>
       </header>
       <TableComponent data={data} />
-      <UserManagerComponent showModal={showModal} closeModal={closeModal}/>
+      <UserManagerComponent showModal={showModal} closeModal={closeModal} />
     </section>
   );
 }
