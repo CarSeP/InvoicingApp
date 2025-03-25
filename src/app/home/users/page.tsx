@@ -1,34 +1,32 @@
 "use client";
 
 import TableComponent from "@/components/Table";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { getCookie } from "cookies-next";
 import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import AddUser from "@/components/AddUserModal";
+import { useFetch, State } from "@/hooks/useFetch";
+import { useState } from "react";
+import UserManagerComponent from "@/components/UserManager";
+
+const URL = "/api/users";
 
 function UsersPage() {
-  const [users, setUsers] = useState([]);
+  const { data, state } = useFetch(URL);
   const [showModal, setShowModal] = useState(false);
-  const getUsers = async () => {
-    const authToken = getCookie("auth");
-    const response = await axios.get("/api/users", {
-      headers: {
-        Authorization: authToken?.toString() || "",
-      },
-    });
-    setUsers(response.data.users);
-  };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  const closeModal = () => setShowModal(false);
+
+  if (state == State.Loading) {
+    return <div>Loading</div>;
+  }
+
+  if (state == State.Error) {
+    return <div>Error</div>;
+  }
 
   return (
-    <div>
-      <TableComponent data={users} />
-      <div className="mt-4">
+    <section>
+      <header className="flex justify-between mb-6">
+        <h1 className="text-2xl font-bold">Users</h1>
         <Button
           onClick={() => setShowModal(true)}
           variant="contained"
@@ -36,12 +34,10 @@ function UsersPage() {
         >
           Add User
         </Button>
-      </div>
-      <AddUser
-        showModal={showModal}
-        handleCloseModal={() => setShowModal(false)}
-      />
-    </div>
+      </header>
+      <TableComponent data={data} />
+      <UserManagerComponent showModal={showModal} closeModal={closeModal}/>
+    </section>
   );
 }
 

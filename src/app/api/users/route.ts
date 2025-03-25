@@ -1,7 +1,7 @@
 import onHandleAuthorization from "@/libs/authorization";
 import prisma from "@/libs/prisma";
-import userScheme from "@/libs/schemas/userScheme";
 import bcrypt from "bcryptjs";
+import { userScheme } from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       active: true,
     },
   });
-  return NextResponse.json({ users }, { status: 200 });
+  return NextResponse.json(users , { status: 200 });
 }
 
 export async function POST(request: NextRequest) {
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         username,
         role,
         active,
-        password: bcrypt.hashSync("password", 10),
+        password: bcrypt.hashSync(password, 10),
       },
     });
 
